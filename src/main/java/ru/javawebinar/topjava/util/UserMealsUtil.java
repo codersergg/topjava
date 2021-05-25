@@ -37,8 +37,7 @@ public class UserMealsUtil {
             caloriesByDate.merge(
                     meal.getDateTime().toLocalDate(),
                     meal.getCalories(),
-                    Integer::sum
-            );
+                    Integer::sum);
             if (isCaloriesByDateMore.get(meal.getDateTime().toLocalDate()) == null) {
                 isCaloriesByDateMore.put(
                         meal.getDateTime().toLocalDate(),
@@ -47,8 +46,7 @@ public class UserMealsUtil {
                 isCaloriesByDateMore.get(meal.getDateTime().toLocalDate()).setExcess(caloriesByDate.get(meal.getDateTime().toLocalDate()) > caloriesPerDay);
             }
             if (TimeUtil.isBetweenHalfOpen(meal.getDateTime().toLocalTime(), startTime, endTime)) {
-                userMealWithExceeds.add(
-                        new UserMealWithExcess(
+                userMealWithExceeds.add(new UserMealWithExcess(
                                 meal.getDateTime(),
                                 meal.getDescription(),
                                 meal.getCalories(),
