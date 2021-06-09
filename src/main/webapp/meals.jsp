@@ -11,11 +11,12 @@
 <hr>
 <h2>Meals</h2>
 <table border="2" cellspacing="0" cellpadding="3">
-
     <tr style="text-align: center">
         <td><h3>Date</h3></td>
         <td><h3>Description</h3></td>
         <td><h3>Calories</h3></td>
+        <td></td>
+        <td></td>
     </tr>
     <c:forEach items="${meals}" var="meal">
         <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both"/>
@@ -24,6 +25,8 @@
             <td>${dateTime}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="meals?action=edit&id=<c:out value="${meal.id}"/>">Update</a></td>
+            <td><a href="meals?action=delete&id=<c:out value="${meal.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
