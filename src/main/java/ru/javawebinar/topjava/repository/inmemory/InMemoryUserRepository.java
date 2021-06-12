@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
+
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
@@ -47,12 +49,14 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return (List<User>) repository.values().stream().sorted(Comparator.comparing(AbstractNamedEntity::getName));
+        return (List<User>) repository.values().stream()
+                .sorted(Comparator.comparing(AbstractNamedEntity::getName).thenComparing(AbstractNamedEntity::getId))
+                .collect(Collectors.toList());
     }
 
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        return repository.values().stream().filter(u -> u.getEmail().equals(email)).collect(Collectors.toList()).get(0);
+        return checkNotFound(repository.values().stream().filter(u -> u.getEmail().equals(email)).collect(Collectors.toList()).get(0), email);
     }
 }
