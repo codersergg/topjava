@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
+import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.AbstractNamedEntity;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
+@Repository
 public class InMemoryMealRepository implements MealRepository {
     private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
     private final Map<Integer, List<Integer>> userMealsRepository = new ConcurrentHashMap<>();
@@ -25,7 +27,6 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int authUserId) {
-        isThisYourMeal(authUserId);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
@@ -41,7 +42,6 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int authUserId) {
-        isThisYourMeal(authUserId);
         List <Integer> uD = getUserMealList(authUserId);
         List <Integer> afterD = uD.stream().filter(u -> u!=id).collect(Collectors.toList());
         userMealsRepository.put(authUserId, afterD);
@@ -50,13 +50,11 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal get(int id, int authUserId) {
-        isThisYourMeal(authUserId);
         return repository.get(id);
     }
 
     @Override
     public Collection<Meal> getAll(int authUserId) {
-        isThisYourMeal(authUserId);
         List<Integer> userMeals = userMealsRepository.get(authUserId);
         List<Meal> u = new CopyOnWriteArrayList<>();
         for (Integer userMeal : userMeals) {
@@ -70,8 +68,5 @@ public class InMemoryMealRepository implements MealRepository {
         else return userMealsRepository.get(authUserId);
     }
 
-    private void isThisYourMeal(int authUserId) {
-        if (authUserId != authUserId()) throw new NotFoundException("it's not your meal");
-    }
 }
 
