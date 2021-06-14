@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
+import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.util.Collection;
-
-import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+import java.time.LocalTime;
+import java.util.List;
 
 @Controller
 public class MealRestController {
@@ -16,33 +16,24 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    /*public MealRestController(MealService service) {
-        this.service = service;
-
-    }*/
-
-    public Meal save(Meal meal, int authUserId) {
-        isThisYourMeal(authUserId);
-        return service.save(meal, authUserId());
+    public Meal save(Meal meal) {
+        return service.save(meal);
     }
 
-    public  boolean delete(int id, int authUserId) {
-        isThisYourMeal(authUserId);
-        return service.delete(id, authUserId());
+    public void delete(int id) {
+        service.delete(id);
     }
 
-    public Meal get(int id, int authUserId) {
-        isThisYourMeal(authUserId);
-        return service.get(id, authUserId());
+    public Meal get(int id) {
+        return service.get(id);
     }
 
-    public Collection<Meal> getAll(int authUserId) {
-        isThisYourMeal(authUserId);
-        return service.getAll(authUserId);
+    public List<MealTo> getAll() {
+        return MealsUtil.getTos(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    private void isThisYourMeal(int authUserId) {
-        if (authUserId != authUserId()) throw new NotFoundException("it's not your meal");
+    public List<MealTo> getAllForDateTime(LocalTime startTime, LocalTime endTime) {
+        return MealsUtil.getFilteredTos(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
     }
 
 }
