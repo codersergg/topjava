@@ -18,20 +18,24 @@ public class MealService {
         this.repository = repository;
     }
 
-    public Meal save(Meal meal) {
-        return checkNotFound(repository.save(meal), "not found meal");
+    public Meal create(Meal meal, Integer userId) {
+        return checkNotFound(repository.save(meal, userId), "not found meal");
     }
 
-    public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+    public void update(Meal meal, Integer userId) {
+        checkNotFound(repository.save(meal, userId), "not found meal");
     }
 
-    public Meal get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+    public void delete(int id, Integer userId) {
+        checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public List<Meal> getAll() {
-        return checkNotFound(repository.getAll(), "not found All meals");
+    public Meal get(int id, Integer userId) {
+        return checkNotFoundWithId(repository.get(id, userId), id);
+    }
+
+    public List<Meal> getAll(Integer userId) {
+        return checkNotFound(repository.getAll(userId), "not found All meals");
     }
 
 }

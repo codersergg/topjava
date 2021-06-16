@@ -45,6 +45,7 @@
         </dl>
         <button type="submit">Save</button>
         <button onclick="window.history.back()" type="button">Cancel</button>
+        <input type="hidden" name="userId" value="${meal.userId}">
     </form>
 </section>
 </body>

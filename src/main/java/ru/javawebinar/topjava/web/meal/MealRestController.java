@@ -10,30 +10,38 @@ import ru.javawebinar.topjava.util.MealsUtil;
 import java.time.LocalTime;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+
 @Controller
 public class MealRestController {
 
     @Autowired
     private MealService service;
 
-    public Meal save(Meal meal) {
-        return service.save(meal);
+    public Meal create(Meal meal) {
+        checkNew(meal);
+        return service.create(meal, authUserId());
+    }
+
+    public void update(Meal meal) {
+        service.update(meal, authUserId());
     }
 
     public void delete(int id) {
-        service.delete(id);
+        service.delete(id, authUserId());
     }
 
     public Meal get(int id) {
-        return service.get(id);
+        return service.get(id, authUserId());
     }
 
     public List<MealTo> getAll() {
-        return MealsUtil.getTos(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return MealsUtil.getTos(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public List<MealTo> getAllForDateTime(LocalTime startTime, LocalTime endTime) {
-        return MealsUtil.getFilteredTos(service.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+        return MealsUtil.getFilteredTos(service.getAll(authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
     }
 
 }
