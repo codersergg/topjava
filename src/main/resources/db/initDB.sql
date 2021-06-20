@@ -37,4 +37,4 @@ CREATE TABLE meals
         CONSTRAINT meals_users_id_fk
             REFERENCES users
 );
-CREATE UNIQUE INDEX meals_date_time_id_idx ON meals (date_time, id);
+CREATE UNIQUE INDEX meals_date_time_idx ON meals (date_time, user_id);
