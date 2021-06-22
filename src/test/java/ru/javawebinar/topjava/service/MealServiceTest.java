@@ -47,6 +47,8 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenInclusive() {
+        List<Meal> betweenInclusive = service.getBetweenInclusive(START_TIME, END_TIME, USER_ID);
+        MealTestData.assertMatch(betweenInclusive, meal_3, meal_2, meal_1);
     }
 
     @Test
@@ -70,5 +72,23 @@ public class MealServiceTest {
         newMeal.setId(newId);
         assertMatch(created, newMeal);
         assertMatch(service.get(newId, USER_ID), newMeal);
+    }
+
+    //delete, get, update
+
+    @Test
+    public void deletedNotFound() {
+        assertThrows(NotFoundException.class, () -> service.delete(USER_MEAL_1, NOT_FOUND));
+    }
+
+    @Test
+    public void getNotFound() {
+        assertThrows(NotFoundException.class, () -> service.get(USER_MEAL_1, NOT_FOUND));
+    }
+
+    @Test
+    public void updateNotFound() {
+        Meal updatedTest = MealTestData.getUpdated();
+        assertThrows(NotFoundException.class, () -> service.update(updatedTest, NOT_FOUND));
     }
 }

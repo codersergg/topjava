@@ -2,6 +2,7 @@ package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Meal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -16,6 +17,11 @@ public class MealTestData {
     public static final int ADMIN_MEAL_1 = START_SEQ + 5;
     public static final int ADMIN_MEAL_2 = START_SEQ + 6;
     public static final int ADMIN_MEAL_3 = START_SEQ + 7;
+
+    public static final int NOT_FOUND = 100_010;
+
+    public static final LocalDate START_TIME = LocalDate.of(2021, Month.MAY, 1);
+    public static final LocalDate END_TIME = LocalDate.of(2021, Month.MAY, 1);
 
     public static final Meal meal_1 = new Meal(USER_MEAL_1, LocalDateTime.of(2021, Month.MAY, 1, 10, 0), "завтрак", 500);
     public static final Meal meal_2 = new Meal(USER_MEAL_2, LocalDateTime.of(2021, Month.MAY, 1, 12, 0), "обед", 600);
