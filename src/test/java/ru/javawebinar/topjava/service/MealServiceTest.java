@@ -19,6 +19,7 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 @ContextConfiguration({
+        "classpath:spring/spring-app-jdbc.xml",
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
 })
