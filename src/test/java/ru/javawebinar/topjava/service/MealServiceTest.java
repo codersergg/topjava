@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -12,6 +13,8 @@ import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 import static org.junit.Assert.assertThrows;
@@ -37,7 +40,7 @@ public class MealServiceTest {
     @Test
     public void get() {
         Meal meal = service.get(USER_MEAL_1, USER_ID);
-        MealTestData.assertMatch(meal, meal_1);
+        MealTestData.assertMatch(meal, userMeal1);
     }
 
     @Test
@@ -49,13 +52,19 @@ public class MealServiceTest {
     @Test
     public void getBetweenInclusive() {
         List<Meal> betweenInclusive = service.getBetweenInclusive(START_TIME, END_TIME, USER_ID);
-        MealTestData.assertMatch(betweenInclusive, meal_3, meal_2, meal_1);
+        MealTestData.assertMatch(betweenInclusive, userMeal2, userMeal1);
+    }
+
+    @Test
+    public void getBetweenNull() {
+        List<Meal> betweenInclusive = service.getBetweenInclusive(null, null, USER_ID);
+        MealTestData.assertMatch(betweenInclusive, userMeal3, userMeal2, userMeal1);
     }
 
     @Test
     public void getAll() {
         List<Meal> all = service.getAll(USER_ID);
-        MealTestData.assertMatch(all, meal_3, meal_2, meal_1);
+        MealTestData.assertMatch(all, userMeal3, userMeal2, userMeal1);
     }
 
     @Test
@@ -91,5 +100,11 @@ public class MealServiceTest {
     public void updateNotFound() {
         Meal updatedTest = MealTestData.getUpdated();
         assertThrows(NotFoundException.class, () -> service.update(updatedTest, NOT_FOUND));
+    }
+
+    @Test
+    public void duplicateMailCreate() {
+        assertThrows(DataAccessException.class, () ->
+                service.create(new Meal(LocalDateTime.of(2021, Month.MAY, 1, 10, 0), "завтрак", 500), USER_ID));
     }
 }
