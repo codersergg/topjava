@@ -105,6 +105,6 @@ public class MealServiceTest {
     @Test
     public void duplicateMailCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new Meal(LocalDateTime.of(2021, Month.MAY, 1, 10, 0), "завтрак", 500), USER_ID));
+                service.create(new Meal(userMeal1.getDateTime(), "завтрак", 500), USER_ID));
     }
 }
