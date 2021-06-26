@@ -1,5 +1,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd2928c1720e44f4bee9c28ea5a1977d)](https://www.codacy.com/gh/codersergg/topjava/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=codersergg/topjava&amp;utm_campaign=Badge_Grade)
 
+[![Build Status](https://api.travis-ci.com/JavaWebinar/topjava.svg?branch=master)](https://travis-ci.com/JavaWebinar/topjava)
+
 Java Enterprise Online Project
 ===============================
 
