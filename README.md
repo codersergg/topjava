@@ -1,5 +1,4 @@
 ****
-****
 Java Enterprise Online Project
 ===============================
 
