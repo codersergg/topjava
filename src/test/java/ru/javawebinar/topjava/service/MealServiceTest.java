@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +14,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -29,6 +32,36 @@ public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    public static List<String> mapTimeTest = new CopyOnWriteArrayList<>();
+
+    @Rule
+    public TestName name = new TestName();
+
+    private long start;
+
+    @Before
+    public void start() {
+        start = System.currentTimeMillis();
+    }
+
+    @After
+    public void end() {
+        String testEnd = (System.currentTimeMillis() - start) + "";
+        String testMethodName = name.getMethodName() + "";
+        String testLog = "Test " + testMethodName + " took " + testEnd + " ms";
+        System.out.println("Test took " + testEnd + " ms");
+        System.out.println("---------------------------------------");
+        mapTimeTest.add(testLog);
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        for (String st : mapTimeTest) {
+            System.out.println(st);
+        }
+        System.out.println("---------------------------------------");
+    }
 
     @Test
     public void delete() {
