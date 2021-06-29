@@ -1,8 +1,12 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.*;
-import org.junit.rules.TestName;
+import org.junit.AfterClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,10 +18,10 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
+import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -30,37 +34,36 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
+    private static final Logger logger = getLogger(MealServiceTest.class);
+
+    private static final StringBuilder resultAfterClass = new StringBuilder();
+
     @Autowired
     private MealService service;
 
-    public static List<String> mapTimeTest = new CopyOnWriteArrayList<>();
+    public static void logInfo(Description description, long nanos) {
+        String testName = description.getMethodName();
+        String resultMethod = String.format("%s - %d\n",
+                testName, TimeUnit.NANOSECONDS.toMicros(nanos));
+        String resultClass = String.format("%-24s - %6d\n",
+                testName, TimeUnit.NANOSECONDS.toMicros(nanos));
+        logger.info(resultMethod);
+        resultAfterClass.append(resultClass);
+    }
 
     @Rule
-    public TestName name = new TestName();
-
-    private long start;
-
-    @Before
-    public void start() {
-        start = System.currentTimeMillis();
-    }
-
-    @After
-    public void end() {
-        String testEnd = (System.currentTimeMillis() - start) + "";
-        String testMethodName = name.getMethodName() + "";
-        String testLog = "Test " + testMethodName + " took " + testEnd + " ms";
-        System.out.println("Test took " + testEnd + " ms");
-        System.out.println("---------------------------------------");
-        mapTimeTest.add(testLog);
-    }
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            logInfo(description, nanos);
+        }
+    };
 
     @AfterClass
-    public static void afterClass() {
-        for (String st : mapTimeTest) {
-            System.out.println(st);
-        }
-        System.out.println("---------------------------------------");
+    public static void printResult() {
+        logger.info("\n---------------------------------\n" +
+                    resultAfterClass +
+                    "---------------------------------\n");
     }
 
     @Test
@@ -94,7 +97,6 @@ public class MealServiceTest {
         assertThrows(DataAccessException.class, () ->
                 service.create(new Meal(null, meal1.getDateTime(), "duplicate", 100), USER_ID));
     }
-
 
     @Test
     public void get() {
