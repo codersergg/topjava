@@ -41,29 +41,36 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
-    public static void logInfo(Description description, long nanos) {
-        String testName = description.getMethodName();
-        String resultMethod = String.format("%s - %d\n",
-                testName, TimeUnit.NANOSECONDS.toMicros(nanos));
-        String resultClass = String.format("%-24s - %6d\n",
-                testName, TimeUnit.NANOSECONDS.toMicros(nanos));
-        logger.info(resultMethod);
-        resultAfterClass.append(resultClass);
-    }
-
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            logInfo(description, nanos);
+            //logInfo(description, nanos);
+            String testName = description.getMethodName();
+            String resultMethod = String.format("%s - %d ms\n",
+                    testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+            String resultClass = String.format("%-24s - %4d ms\n",
+                    testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+            logger.info(resultMethod);
+            resultAfterClass.append(resultClass);
         }
     };
 
+    /*public static void logInfo(Description description, long nanos) {
+        String testName = description.getMethodName();
+        String resultMethod = String.format("%s - %d ms\n",
+                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+        String resultClass = String.format("%-24s - %6d ms\n",
+                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+        logger.info(resultMethod);
+        resultAfterClass.append(resultClass);
+    }*/
+
     @AfterClass
     public static void printResult() {
-        logger.info("\n---------------------------------\n" +
+        logger.info("\n----------------------------------\n" +
                     resultAfterClass +
-                    "---------------------------------\n");
+                    "----------------------------------\n");
     }
 
     @Test
