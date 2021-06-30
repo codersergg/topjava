@@ -45,7 +45,6 @@ public class MealServiceTest {
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            //logInfo(description, nanos);
             String testName = description.getMethodName();
             String resultMethod = String.format("%s - %d ms\n",
                     testName, TimeUnit.NANOSECONDS.toMillis(nanos));
@@ -55,16 +54,6 @@ public class MealServiceTest {
             resultAfterClass.append(resultClass);
         }
     };
-
-    /*public static void logInfo(Description description, long nanos) {
-        String testName = description.getMethodName();
-        String resultMethod = String.format("%s - %d ms\n",
-                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
-        String resultClass = String.format("%-24s - %6d ms\n",
-                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
-        logger.info(resultMethod);
-        resultAfterClass.append(resultClass);
-    }*/
 
     @AfterClass
     public static void printResult() {
