@@ -20,14 +20,6 @@ public abstract class AbstractUserServiceTest extends AbstractBaseServiceTest {
     @Autowired
     private UserService service;
 
-    @Autowired
-    private CacheManager cacheManager;
-
-    @Before
-    public void setup() {
-        cacheManager.getCache("users").clear();
-    }
-
     @Test
     public void create() {
         User created = service.create(getNew());
