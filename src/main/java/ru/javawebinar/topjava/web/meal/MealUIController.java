@@ -22,19 +22,19 @@ public class MealUIController extends AbstractMealController {
         return super.getAll();
     }
 
-    @Override
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        super.delete(id);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void create(@RequestParam LocalDateTime dateTime,
                        @RequestParam String description,
                        @RequestParam int calories) {
         super.create(new Meal(dateTime, description, calories));
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        super.delete(id);
     }
 
     @Override

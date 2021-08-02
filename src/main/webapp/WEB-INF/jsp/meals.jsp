@@ -38,34 +38,32 @@
             <spring:message code="common.add"/>
         </button>
         <hr>
-        <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-            <table class="table table-striped" id="datatable">
-                <thead>
-                <tr>
-                    <th><spring:message code="meal.dateTime"/></th>
-                    <th><spring:message code="meal.description"/></th>
-                    <th><spring:message code="meal.calories"/></th>
-                    <th></th>
-                    <th></th>
+        <table class="table table-striped" id="datatable">
+            <thead>
+            <tr>
+                <th><spring:message code="meal.dateTime"/></th>
+                <th><spring:message code="meal.description"/></th>
+                <th><spring:message code="meal.calories"/></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <c:forEach items="${meals}" var="meal">
+                <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
+                <tr data-mealExcess="${meal.excess}" id="${meal.id}">
+                    <td>
+                            <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
+                            <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
+                            <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
+                            ${fn:formatDateTime(meal.dateTime)}
+                    </td>
+                    <td>${meal.description}</td>
+                    <td>${meal.calories}</td>
+                    <td><a><span class="fa fa-pencil"></span></a></td>
+                    <td><a class="delete"><span class="fa fa-remove"></span></a></td>
                 </tr>
-                </thead>
-                <c:forEach items="${meals}" var="meal">
-                    <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealTo"/>
-                    <tr data-mealExcess="${meal.excess}" id="${meal.id}">
-                        <td>
-                                <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
-                                <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
-                                <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
-                                ${fn:formatDateTime(meal.dateTime)}
-                        </td>
-                        <td>${meal.description}</td>
-                        <td>${meal.calories}</td>
-                        <td><a><span class="fa fa-pencil"></span></a></td>
-                        <td><a class="delete"><span class="fa fa-remove"></span></a></td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </div>
+            </c:forEach>
+        </table>
     </div>
 </div>
 
@@ -78,7 +76,7 @@
             </div>
             <div class="modal-body">
                 <form id="detailsForm">
-                    <input type="hidden" name="id" value="${meal.id}">
+                    <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/>:</label>
                         <input class="form-control datetimepicker" value="${meal.dateTime}" id="dateTime" name="dateTime" required>
@@ -106,6 +104,6 @@
         </div>
     </div>
 </div>
-    <jsp:include page="fragments/footer.jsp"/>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
