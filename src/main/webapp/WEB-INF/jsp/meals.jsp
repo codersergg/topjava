@@ -79,7 +79,7 @@
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/>:</label>
-                        <input class="form-control datetimepicker" value="${meal.dateTime}" id="dateTime" name="dateTime" required>
+                        <input class="form-control" type="datetime-local" value="${meal.dateTime}" id="dateTime" name="dateTime" required>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-form-label"><spring:message code="meal.description"/>:</label>
