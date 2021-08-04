@@ -4,6 +4,23 @@ const ctx = {
     ajaxUrl: mealAjaxUrl
 };
 
+function filteredTable() {
+    $.ajax({
+        type: "GET",
+        url: mealAjaxUrl+"filter",
+        data: $("#filter").serialize()
+    }).done(updateFilterByData);
+}
+
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get(mealAjaxUrl, updateTable);
+}
+
+function updateFilterByData(data) {
+    context.datatableApi.clear().rows.add(data).draw();
+}
+
 $(function () {
     makeEditable(
         $("#datatable").DataTable({
@@ -31,7 +48,7 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })
