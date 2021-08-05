@@ -34,13 +34,13 @@
                 <span class="fa fa"></span>
                 <spring:message code="common.cancel"/>
             </button>
-            <button class="btn btn-primary" onclick="filteredTable()">
+            <button class="btn btn-primary" type="button" onclick="filteredTable()">
                 <span class="fa fa"></span>
                 <spring:message code="meal.filter"/>
             </button>
         </form>
         <hr>
-        <button class="btn btn-primary" onclick="add()">
+        <button class="btn btn-primary" type="button" onclick="add()">
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>

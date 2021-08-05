@@ -18,7 +18,7 @@ function clearFilter() {
 }
 
 function updateFilterByData(data) {
-    context.datatableApi.clear().rows.add(data).draw();
+    $.get(mealAjaxUrl, updateTable);
 }
 
 $(function () {
